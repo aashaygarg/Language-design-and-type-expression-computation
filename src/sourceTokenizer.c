@@ -24,7 +24,7 @@ void tokeniseSourcecode(char *str, tokenStream *s)
 
 		char *line_read;
 		int i;
-		line_read= strtok(buffer, " \n");
+		line_read= strtok(buffer, " \n\t");
 		for (i = 0; line_read != NULL; i++) {
 		  if(s->head == NULL){
 			NODE* ptr = (NODE*)malloc(sizeof(NODE));
@@ -36,6 +36,7 @@ void tokeniseSourcecode(char *str, tokenStream *s)
 		                      break;
 				case NUM : ptr->ele.id.num = atoi(line_read);
 		                       break;
+        default : strcpy(ptr->ele.id.str,line_read);
         		}
   
 			ptr->ele.line_no = line_no;
@@ -53,6 +54,7 @@ void tokeniseSourcecode(char *str, tokenStream *s)
                               break;
 			case NUM : ptr->ele.id.num = atoi(line_read);
                                break;
+      default : strcpy(ptr->ele.id.str,line_read);
             
             }
     
@@ -64,7 +66,7 @@ void tokeniseSourcecode(char *str, tokenStream *s)
 
 	}
 
-	  line_read = strtok(NULL, " \n");
+	  line_read = strtok(NULL, " \n\t");
     
 	}
 	line_no++;
@@ -109,6 +111,7 @@ void populate_lookup_table() {
 
 token_name search_lookup_table(char *lexeme) {
   token_name num = search_hash_table(lookup_table, lexeme);
+  printf("%s   %d\n",lexeme,num);
   if (KEY_NOT_FOUND == num) {
 
      for(int i=0;i<strlen(lexeme);i++)

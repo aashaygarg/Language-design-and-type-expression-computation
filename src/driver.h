@@ -4,8 +4,8 @@
 #include<stdio.h>
 
 
-#define NUM_OF_RULES 49
-#define NUM_OF_NONTERMINALS 28
+#define NUM_OF_RULES 48
+#define NUM_OF_NONTERMINALS 27
 #define NUM_OF_TERMINALS 33
 #define MAX_SYMBOL_LENGTH 25
 

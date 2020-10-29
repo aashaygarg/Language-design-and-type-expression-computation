@@ -57,18 +57,17 @@ tree_node *parse_input_source_code(tokenStream *tk_s_ptr) {
   stack *main_stack = stack_init();
   stack *aux_stack = stack_init();
   tree_node *root = create_tree_node();
-  NODE* ptr = tk_s_ptr->head;
+  NODE* ptrr = tk_s_ptr->head;
 
   root->sym.nt = MAINPROGRAM;
   root->sym.is_terminal = false;
   push(main_stack, root); // push start symbol on stack
-
-  ELEMENT tkn = ptr->ele;
+  ELEMENT tkn = ptrr->ele;
 
 
   while (true) {
 	num_tree_nodes++;
-	printf("%d\n",tkn.name);
+	printf("%s $$$$$$$$$$\n",tkn.id.str);
 	tree_node *node = (tree_node *)pop(main_stack);
 	if ((node != NULL) && (node->sym).is_terminal == true) {
 	  if (node->sym.t == EPSILON) {
@@ -76,6 +75,18 @@ tree_node *parse_input_source_code(tokenStream *tk_s_ptr) {
 		  strncpy(node->token.id.str, "epsilon", MAX_LEN);
 		continue;
 	  }
+
+		if (node->sym.t != tkn.name && tkn.name != ID ) // terminal on top of stack does not matc							   // with lookhead symbol
+	  {
+		printf("%d   jiiii\n",tkn.name);
+		printf("Popping token %s from stack top\n",terminal_string[node->sym.t]);
+		
+		node = (tree_node *)pop(main_stack);
+		
+		continue;
+	  }
+		else{
+
 		node->token.line_no = tkn.line_no;
 		node->token.name = tkn.name;
 		switch (tkn.name) {
@@ -84,17 +95,30 @@ tree_node *parse_input_source_code(tokenStream *tk_s_ptr) {
 		  break;
 
 		default:
-		  // node->token.id.str = (char *)malloc(sizeof(MAX_LEN));
 		  strncpy(node->token.id.str, tkn.id.str, MAX_LEN);
 		}
-	  
-	ptr=ptr->next;
-   	tkn = ptr->ele;
+		}
+	ptrr=ptrr->next;
+   	tkn = ptrr->ele;
 	  continue;
 	}
 
-	int rule_no = parse_table[node->sym.nt][tkn.name];
+	if (node == NULL) {
+	 
+		printf("\nSyntactically correct.\n\n");
+	  break;
+	}
 
+	int rule_no = parse_table[node->sym.nt][tkn.name];
+	if (rule_no == NO_MATCHING_RULE) {
+
+	  while (set_find_elem(follow_set[node->sym.nt], tkn.name) == false) {
+		ptrr=ptrr->next;
+   		tkn = ptrr->ele;
+	  }
+	  printf("Token \"%s\" found at line number %d\n",terminal_string[tkn.name], tkn.line_no);
+	  continue;
+	}
 	cell rule = grammar[rule_no];
 	rhsnode_ptr rhs_ptr = rule.head;
 
@@ -336,8 +360,7 @@ void populate_first_sets() {
 			  true) // if  terminal add and move to next rule
 		  {
 			token_name t = (temp->sym).t;
-			if (set_find_elem(first_set[lhs], t) ==
-				false) // check if terminal already there in the
+			if (set_find_elem(first_set[lhs], t) ==false) // check if terminal already there in the
 					   // first set or not
 			{
 			  set_add_elem(first_set[lhs], t);
@@ -364,8 +387,7 @@ void populate_first_sets() {
 			eps_in_lhs = true;
 		  }
 
-		  if (is_superset(lhs_symbol_fset, rhs_symbol_fset) ==
-			  false) // rhs nt has a terminal which lhs nt does not
+		  if (is_superset(lhs_symbol_fset, rhs_symbol_fset) ==false) // rhs nt has a terminal which lhs nt does not
 					 // have in it's fset
 		  {
 			is_changed = true;
