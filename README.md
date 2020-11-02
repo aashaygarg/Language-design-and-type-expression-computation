@@ -49,5 +49,5 @@ Option 3: Print parse tree in the specified format
 Option 4: Print typeExpressionTable in the specified format.
 Also, ensure that all options are independent of each other. For example, option 2 must first create the parse tree and then traverse appropriately. Similarly the Option 1 created earlier should be independent from other options.
 
-Implementation platform and compiler: 
+Implementation platform and compiler
 All implementation will be required to be done in C programming language. You should use the Ubuntu (version 20.04.1 LTS) and GCC (version 9.3.0) strictly for all your implementations. If you have only windows operating system, then install Ubuntu on the virtual box (free from oracle) and install the given gcc version for compiling this code. 
