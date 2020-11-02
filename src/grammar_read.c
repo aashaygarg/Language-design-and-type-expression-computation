@@ -1,3 +1,10 @@
+/***************************************
+Group No 35
+ 2018A7PS0238P Name: Hritwik Goklaney		         
+ 2018A7PS0262P Name: Yash Gupta 
+ 2018A7PS0161P Name: Chaitanya Kulkarni		         
+ 2018A7PS0004P Name: Aashay Garg	
+***************************************/
 #include "grammar_read.h"
 #include "driver.h"
 
@@ -82,12 +89,6 @@ void parser_init() {
 }
 
 
-/**
- * @brief inserts a symbol at end of the given rule's list
- *
- * @param ptr_tail - tail pointer to rule's linked list
- * @param sym - symbol to be inserted
- */
 void insert_at_end(rhsnode_ptr *ptr_tail, symbol sym) {
 
   rhsnode_ptr node = (rhsnode_ptr)malloc(sizeof(rhsnode));
@@ -123,8 +124,17 @@ symbol get_symbol(char str[]) {
   return sym;
 }
 
-void grammar_fill(FILE *fptr) {
+void readGrammar() {
 
+  FILE *fptr = fopen("Grammar_PPL3.txt", "r");
+  if(fptr == NULL)
+        {
+            perror("fopen");
+        }
+
+    populate_non_terminal_string();
+    populate_terminal_string();
+    parser_init();
   int rule_num = 0;
   char buffer[RHS_MAX_LENGTH];
 
@@ -151,6 +161,7 @@ void grammar_fill(FILE *fptr) {
 	}
 	rule_num++;
   }
+  fclose(fptr);
 }
 
 void print_symbol(symbol sym) {

@@ -1,3 +1,10 @@
+/***************************************
+Group No 35
+ 2018A7PS0238P Name: Hritwik Goklaney		         
+ 2018A7PS0262P Name: Yash Gupta 
+ 2018A7PS0161P Name: Chaitanya Kulkarni		         
+ 2018A7PS0004P Name: Aashay Garg	
+***************************************/
 #include "parser.h"
 #include "hashtable.h"
 #include "setADT.h"
@@ -26,15 +33,14 @@ void create_parse_table() {
 	set rhs_first_set = get_rule_first_set(grammar[i].head);
 
 	for (int j = 0; j < SET_SIZE; j++) {
-	  ull num = rhs_first_set[j]; // first of lhs
+	  ull num = rhs_first_set[j]; 
 
 	  while (num) {
-		int pos = rightmost_set_bit(&num); // position of terminal in first set
+		int pos = rightmost_set_bit(&num); 
 		pos += (ULL_NUM_BITS * j);
 		if (EPSILON == pos) {
 		  for (int j = 0; j < SET_SIZE; j++) {
-			ull num =
-				follow_set[nt][j]; // if epsilon in first set, add follow also
+			ull num =follow_set[nt][j]; 
 			while (num) {
 			  int pos = rightmost_set_bit(&num);
 			  pos += (ULL_NUM_BITS * j);
@@ -42,17 +48,17 @@ void create_parse_table() {
 				parse_table[nt][pos] = i;
 			  }
 			}
-		  } // end of for
-		}   // end of if - epsilon presence
+		  } 
+		}  
 		else {
-		  parse_table[nt][pos] = i; // don't consider epsilon as terminal
+		  parse_table[nt][pos] = i; 
 		}
-	  } // end of while - adding elements of first set
-	}   // end of for - traversing in all subparts of bitstring
-  }     // end of for - travwersal in all rules
+	  } 
+	}   
+  }     
 }
 
-tree_node *parse_input_source_code(tokenStream *tk_s_ptr) {
+tree_node *createParseTree(tokenStream *tk_s_ptr) {
 
   stack *main_stack = stack_init();
   stack *aux_stack = stack_init();
@@ -61,13 +67,12 @@ tree_node *parse_input_source_code(tokenStream *tk_s_ptr) {
 
   root->sym.nt = MAINPROGRAM;
   root->sym.is_terminal = false;
-  push(main_stack, root); // push start symbol on stack
+  push(main_stack, root); 
   ELEMENT tkn = ptrr->ele;
 
 
-  while (true) {
+  while (ptrr->next) {
 	num_tree_nodes++;
-	printf("%s $$$$$$$$$$\n",tkn.id.str);
 	tree_node *node = (tree_node *)pop(main_stack);
 	if ((node != NULL) && (node->sym).is_terminal == true) {
 	  if (node->sym.t == EPSILON) {
@@ -76,13 +81,12 @@ tree_node *parse_input_source_code(tokenStream *tk_s_ptr) {
 		continue;
 	  }
 
-		if (node->sym.t != tkn.name && tkn.name != ID ) // terminal on top of stack does not matc							   // with lookhead symbol
+		if (node->sym.t != tkn.name && tkn.name != ID )
 	  {
-		printf("%d   jiiii\n",tkn.name);
-		printf("Popping token %s from stack top\n",terminal_string[node->sym.t]);
-		
+
+
 		node = (tree_node *)pop(main_stack);
-		
+
 		continue;
 	  }
 		else{
@@ -104,7 +108,7 @@ tree_node *parse_input_source_code(tokenStream *tk_s_ptr) {
 	}
 
 	if (node == NULL) {
-	 
+
 		printf("\nSyntactically correct.\n\n");
 	  break;
 	}
@@ -137,7 +141,9 @@ tree_node *parse_input_source_code(tokenStream *tk_s_ptr) {
 	  push(main_stack, temp);
 	  temp = (tree_node *)pop(aux_stack);
 	}
-  } // end of while(true) loop : parsing done
+  } 
+
+  printf("HELLO KIDDA!");
   return root;
 
 }
@@ -154,24 +160,24 @@ void pretty_print(char *s) {
 	}
 
 	printf("%s", s);
-	
+
 	int right_margin = left_margin;
-	
+
 	if (len % 2 == 1)
 		right_margin++;
-	for (int i = 0; i < right_margin; i++) 
+	for (int i = 0; i < right_margin; i++)
 	{
 		printf(" ");
 	}
-	
+
 	printf("|");
 }
 
 
-void print_node(tree_node *node) 
+void print_node(tree_node *node)
 {
 	char *s = (char *)calloc(MAX_LEN, sizeof(char));
-	for (int i = 0; i < MAX_LEN; i++) 
+	for (int i = 0; i < MAX_LEN; i++)
 	{
 		s[i] = '\0';
 	}
@@ -187,7 +193,7 @@ void print_node(tree_node *node)
 		{
 			snprintf(s, MAX_LEN, "%s", (node->token).id.str);
 			pretty_print(s);
-		} 
+		}
 		else
 		{
 			pretty_print("----");
@@ -195,17 +201,17 @@ void print_node(tree_node *node)
 		snprintf(s, MAX_LEN, "%d", (node->token).line_no);
 		pretty_print(s);
 
-		if(node->token.id.str != NULL) 
+		if(node->token.id.str != NULL)
 		{
 			snprintf(s, MAX_LEN, "%s", terminal_string[(node->token).name]);
 			pretty_print(s);
-		} 
+		}
 		else
 		{
 			pretty_print("----");
 		}
 
-		switch ((node->token).name) 
+		switch ((node->token).name)
 		{
 			case NUM:
 			{
@@ -227,8 +233,8 @@ void print_node(tree_node *node)
 		pretty_print("yes");
 
 		printf("\t\t%s\n", terminal_string[(node->sym).t]);
-	} 
-	else 
+	}
+	else
 	{
 		pretty_print("----");
 		pretty_print("----");
@@ -248,22 +254,45 @@ void print_node(tree_node *node)
 
 
 
-void print_parse_tree(tree_node *root) {
+void printParseTree(tree_node *root) {
 	if (root == NULL)
 		return;
 
 	if (root->leftmost_child)
 		print_parse_tree(root->leftmost_child);
-	
+
 	print_node(root);
 
 	if (root->leftmost_child)
   	{
 		tree_node *temp = root->leftmost_child->sibling;
 
-		while (temp != NULL) 
+		while (temp != NULL)
 		{
-			print_parse_tree(temp);
+			printParseTree(temp);
+			temp = temp->sibling;
+		}
+  	}
+}
+
+
+void traverseParseTree(tree_node *root){
+		if (root == NULL)
+		return;
+
+	if (root->leftmost_child)
+		print_parse_tree(root->leftmost_child);
+
+	printf("Preorder Traversal of Tree\n");
+	print_node(root);
+
+	if (root->leftmost_child)
+  	{
+		tree_node *temp = root->leftmost_child->sibling;
+
+		while (temp != NULL)
+		{
+			printParseTree(temp);
 			temp = temp->sibling;
 		}
   	}
@@ -278,14 +307,14 @@ void populate_follow_sets() {
 
   set_add_elem(follow_set[MAINPROGRAM], DOLLAR);
 
-  while (is_changed == true) // traverse until convergence
+  while (is_changed == true)
   {
 	is_changed = false;
 	for (int i = 0; i < NUM_OF_RULES; i++) {
 	  lhs = grammar[i].lhs;
 	  rhs_ptr = grammar[i].head;
 	  rhsnode_ptr temp = rhs_ptr;
-	  while (temp != NULL) // traverse till end of the rule
+	  while (temp != NULL)
 	  {
 		if ((temp->sym).is_terminal == false) {
 		  rhs_sym = ((temp->sym).nt);
@@ -304,7 +333,7 @@ void populate_follow_sets() {
 		  bool eps_in_rhs = false;
 
 		  if (set_find_elem(rhs_rule_set, EPSILON) ==
-			  true) // eps present in this rule
+			  true) 
 		  {
 			eps_in_rhs = true;
 		  }
@@ -326,25 +355,25 @@ void populate_follow_sets() {
 		  free(tmp_follow);
 		}
 		temp = temp->next;
-	  } // end of rule linked list traversal while loop
-	}   // end of for - grammar traversal
-  }     // end of while - infinite loop until convergence
+	  } 
+	}   
+  }     
 }
 
 void populate_first_sets() {
   bool is_changed = true;
   int lhs;
   rhsnode_ptr rhs_ptr;
-  while (is_changed == true) // traverse until convergence
+  while (is_changed == true) 
   {
 	is_changed = false;
 	for (int i = 0; i < NUM_OF_RULES; i++) {
 	  lhs = grammar[i].lhs;
 	  rhs_ptr = grammar[i].head;
-	  if ((rhs_ptr->sym).is_terminal ==true) // if terminal, add it and move ahead
+	  if ((rhs_ptr->sym).is_terminal ==true) 
 	  {
 		token_name t = (rhs_ptr->sym).t;
-		if (set_find_elem(first_set[lhs], t) ==false) // check if terminal already there in the first set or not
+		if (set_find_elem(first_set[lhs], t) ==false) 
 		{
 		  set_add_elem(first_set[lhs], t);
 		  is_changed = true;
@@ -354,14 +383,14 @@ void populate_first_sets() {
 		rhsnode_ptr temp = rhs_ptr;
 		ull *rhs_symbol_fset;
 		ull *lhs_symbol_fset = first_set[lhs];
-		while (temp != NULL) // traverse till end of the rule
+		while (temp != NULL) 
 		{
 		  if ((temp->sym).is_terminal ==
-			  true) // if  terminal add and move to next rule
+			  true) 
 		  {
 			token_name t = (temp->sym).t;
-			if (set_find_elem(first_set[lhs], t) ==false) // check if terminal already there in the
-					   // first set or not
+			if (set_find_elem(first_set[lhs], t) ==false) 
+					   
 			{
 			  set_add_elem(first_set[lhs], t);
 			  is_changed = true;
@@ -377,7 +406,7 @@ void populate_first_sets() {
 
 		  if (set_find_elem(rhs_symbol_fset,
 							EPSILON) ==
-			  true) // remove epsilon from current nt before checking things
+			  true) 
 		  {
 			eps_in_rhs = true;
 			set_remove_elem(rhs_symbol_fset, EPSILON);
@@ -387,34 +416,34 @@ void populate_first_sets() {
 			eps_in_lhs = true;
 		  }
 
-		  if (is_superset(lhs_symbol_fset, rhs_symbol_fset) ==false) // rhs nt has a terminal which lhs nt does not
+		  if (is_superset(lhs_symbol_fset, rhs_symbol_fset) ==false) 
 					 // have in it's fset
 		  {
 			is_changed = true;
 			set_union(lhs_symbol_fset, lhs_symbol_fset, rhs_symbol_fset);
 
 			if (eps_in_rhs ==
-				false) // if rhs nt does not have eps, no need to go further
+				false) 
 			{
 			  break;
 			} else {
-			  set_add_elem(rhs_symbol_fset, EPSILON); // set eps back to rhs nt
+			  set_add_elem(rhs_symbol_fset, EPSILON); 
 			  if (eps_in_lhs == false) {
-				if (temp->next == NULL) // only add eps to lhs nt if rhs is last
-										// nt in the rule
+				if (temp->next == NULL) 
+						
 				{
 				  set_add_elem(lhs_symbol_fset, EPSILON);
 				  is_changed = true;
 				}
 			  }
 			}
-		  } else // if is_diff == false, break;
+		  } else 
 		  {
 			if (eps_in_rhs == true) {
-			  set_add_elem(rhs_symbol_fset, EPSILON); // set eps back to rhs nt
+			  set_add_elem(rhs_symbol_fset, EPSILON); 
 			  if (eps_in_lhs == false) {
-				if (temp->next == NULL) // only add eps to lhs nt if rhs is last
-										// nt in the rule
+				if (temp->next == NULL) 
+										
 				{
 				  set_add_elem(lhs_symbol_fset, EPSILON);
 				  is_changed = true;
@@ -424,11 +453,11 @@ void populate_first_sets() {
 			break; //
 		  }
 		  temp = temp->next;
-		} // end of rule linked list traversal while loop
-	  }   // end of else (non-terminal branch)
-	}     // end of for - grammar traversal
-  }       // end of while - infinite loop until convergence
-} // end of function
+		} 
+	  }  
+	}     
+  }       
+} 
 
 
 set get_rule_first_set(rhsnode_ptr node) {
@@ -462,11 +491,11 @@ set get_rule_first_set(rhsnode_ptr node) {
 		if (temp->next != NULL) {
 		  set_remove_elem(fset, EPSILON);
 		}
-	  } // end of else - eps present in fset
-	}   // end of else - is nt
+	  } 
+	}   
 
 	temp = temp->next;
-  } // end of while - ll traversal
+  } 
   return fset;
 }
 

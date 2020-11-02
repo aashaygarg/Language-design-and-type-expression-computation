@@ -1,3 +1,10 @@
+/***************************************
+Group No 35
+ 2018A7PS0238P Name: Hritwik Goklaney		         
+ 2018A7PS0262P Name: Yash Gupta 
+ 2018A7PS0161P Name: Chaitanya Kulkarni		         
+ 2018A7PS0004P Name: Aashay Garg	
+***************************************/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

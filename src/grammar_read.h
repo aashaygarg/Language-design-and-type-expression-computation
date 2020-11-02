@@ -14,8 +14,8 @@
 
 #define RHS_MAX_LENGTH 200
 #define NO_MATCHING_RULE -1
-#define NUM_OF_RULES 48
-#define NUM_OF_NONTERMINALS 27
+#define NUM_OF_RULES 64
+#define NUM_OF_NONTERMINALS 40
 #define NUM_OF_TERMINALS 33
 #define MAX_SYMBOL_LENGTH 25
 #define SET_SIZE 3
@@ -41,14 +41,27 @@ JAGGED_INDEX_MULTID,
 JAGGED_VALUES_INIT,
 ROW_VALUES,
 COLUMNS,
+RANGER,
+JAGGEDEXTRA,
+JAGGED_VALUES_RECU,
+RV,
+COL,
+VAR,
+WHICHID,
 EXPRESSION,
-SUMEXPRESSION,
-OREXPRESSION,
-ANDEXPRESSION,
-MULEXPRESSION,
+RELATIONALEXPR,
+EXPRESSIONDASH,
+UNARYARITHMETICEXPR,
+LOGICALOP,
+NONUNARYARITHMETICEXPR,
+RELATIONALEXPRDASH,
+ADDSUBOP,
+RESTUNARYARITHMETICEXPR,
+TERM,
 FACTOR,
-SUMOP,
-MULOP
+TERM_DASH,
+MULDIVOP,
+NONUNARYARITHMETICEXPRD
 } nonterminal;
 
 
@@ -103,7 +116,7 @@ void populate_non_terminal_string();
 void populate_terminal_string();
 void insert_at_end(rhsnode_ptr *ptr_tail, symbol sym);
 symbol get_symbol(char str[]);
-void grammar_fill(FILE *fptr);
+void readGrammar();
 void print_symbol(symbol sym);
 void print_rule(int rule_no);
 void print_grammar();

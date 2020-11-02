@@ -1,3 +1,10 @@
+/***************************************
+Group No 35
+ 2018A7PS0238P Name: Hritwik Goklaney		         
+ 2018A7PS0262P Name: Yash Gupta 
+ 2018A7PS0161P Name: Chaitanya Kulkarni		         
+ 2018A7PS0004P Name: Aashay Garg	
+***************************************/
 #include "sourceTokenizer.h"
 #include <stdbool.h>
 #include <stdio.h>
@@ -13,7 +20,6 @@ void tokeniseSourcecode(char *str, tokenStream *s)
 	FILE* fptr = fopen(str, "r");
 	if (fptr == NULL) {
 		printf("Could not open file %s", str);
-		return false;
 	}
 	
 	populate_lookup_table();
